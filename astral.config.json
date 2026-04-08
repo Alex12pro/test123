@@ -1,0 +1,10 @@
+{
+  "cookieName": "astral_pass",
+  "cookieTTLSeconds": 21600,
+  "challengePath": "/astral-challenge",
+  "verifyPath": "/api/astral-verify",
+  "statusPath": "/api/astral-status",
+  "sdkPath": "/astral-sdk.js",
+  "assetsPath": "/astral-assets",
+  "sensitivePaths": ["/login", "/signup", "/account", "/dashboard", "/api"]
+}

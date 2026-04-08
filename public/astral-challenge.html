@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Astral Gate</title>
+  <link rel="stylesheet" href="/astral-assets/challenge.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <main class="wrap">
+    <section class="card">
+      <div class="badge">ASTRAL GATE</div>
+      <h1>Verifying browser access</h1>
+      <p>Complete the browser verification to enter this site.</p>
+      <div class="status" id="status">Running browser checks…</div>
+      <button id="continueBtn" disabled>Continue to site</button>
+      <small>A signed cookie is issued after successful verification.</small>
+    </section>
+  </main>
+  <script>
+    const next = new URLSearchParams(location.search).get('next') || '/';
+    const btn = document.getElementById('continueBtn');
+    const status = document.getElementById('status');
+    const proof = { tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown', lang: navigator.language || 'unknown', platform: navigator.platform || 'unknown', screen: [screen.width, screen.height, screen.colorDepth].join('x'), cookiesEnabled: navigator.cookieEnabled, webdriver: !!navigator.webdriver, ua: navigator.userAgent };
+    setTimeout(() => { status.textContent = 'Checks passed. Ready to continue.'; btn.disabled = false; }, 900);
+    btn.onclick = async () => {
+      btn.disabled = true;
+      status.textContent = 'Creating protected session…';
+      const res = await fetch('/api/astral-verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ next, proof }) });
+      const data = await res.json();
+      if (data.ok && data.redirect) location.href = data.redirect;
+      else { status.textContent = 'Verification failed. Refresh and try again.'; btn.disabled = false; }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Astral Vercel Demo</title>
+  <style>body{margin:0;font-family:Inter,Arial,sans-serif;display:grid;place-items:center;min-height:100vh;background:#091120;color:#eef3ff} .card{max-width:760px;padding:28px;background:#111a2f;border-radius:24px;border:1px solid rgba(124,92,255,.22)} pre{white-space:pre-wrap}</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Astral Vercel Adapter</h1>
+    <p>This is the sample protected Vercel site.</p>
+    <button id="load">Load status</button>
+    <pre id="out">Waiting…</pre>
+  </div>
+  <script src="/astral-sdk.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const out = document.getElementById('out');
+      if (!window.AstralSDK) { out.textContent = 'Astral SDK failed to load.'; return; }
+      const sdk = window.AstralSDK.create({ statusUrl: '/api/astral-status' });
+      sdk.patchFetch();
+      document.getElementById('load').onclick = async () => { out.textContent = JSON.stringify(await sdk.getStatus(), null, 2); };
+    });
+  </script>
+</body>
+</html>
